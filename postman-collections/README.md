@@ -14,7 +14,7 @@ Note that some of these APIs are v0 - these are our Early Adopter APIs.  To find
 
 ## Get Help
 
-Ask questions by sending us an email to <hospitality_apis_ww_group@oracle.com>.
+Ask questions by sending us an email to <hospitality-integrations_ww@oracle.com>.
 
 ## Get Involved
 
@@ -33,4 +33,4 @@ See [LICENSE](../LICENSE.txt) for more details.
 
 ## Copyright
 
-Copyright (c) 2021, 2022 Oracle and/or its affiliates.
+Copyright (c) 2021, 2024 Oracle and/or its affiliates.

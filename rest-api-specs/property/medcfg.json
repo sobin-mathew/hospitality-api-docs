@@ -2,8 +2,8 @@
   "swagger": "2.0",
   "info": {
     "title": "OPERA Cloud Content Service",
-    "description": "Opera Content Service offers capability to manage large content such as images and files.<br /><br />Compatible with OPERA Cloud release 21.5.0.0.<br /><br /><p>This document and all content within is available under the Universal Permissive License v 1.0 (https://oss.oracle.com/licenses/upl). Copyright (c) 2020,2022 Oracle and/or its affiliates.</p>",
-    "version": "21.5.0.0",
+    "description": "Opera Content Service offers capability to manage large content such as images and files.<br /><br /> Compatible with OPERA Cloud release 24.4.<br /><br /><p> This document and all content within is available under the Universal Permissive License v 1.0 (https://oss.oracle.com/licenses/upl). Copyright (c) 2020, 2024 Oracle and/or its affiliates.</p>",
+    "version": "24.4",
     "termsOfService": "https://www.oracle.com/legal/terms.html",
     "contact": {
       "email": "hospitality_apis_ww_grp@oracle.com"
@@ -23,8 +23,8 @@
   "paths": {
     "/customizedLetter/{letterId}": {
       "get": {
-        "summary": "Get customized letter",
-        "description": "Use this API to get a customized letter. <p><strong>OperationId:</strong>getCustomizedLetter</p>",
+        "summary": "Return customized letter",
+        "description": "Use this API to return a customized letter based on search criteria such as letterId, letterIdContext, letterIdtype. <p><strong>OperationId:</strong>getCustomizedLetter</p>",
         "operationId": "getCustomizedLetter",
         "parameters": [
           {
@@ -38,6 +38,7 @@
           },
           {
             "name": "letterIdContext",
+            "maxLength": 80,
             "in": "query",
             "required": false,
             "description": "Used to identify the source of the identifier (e.g., IATA, ABTA).",
@@ -47,6 +48,7 @@
             "name": "letterIdtype",
             "in": "query",
             "required": false,
+            "maxLength": 80,
             "description": "A reference to the type of object defined by the UniqueID element.",
             "type": "string"
           },
@@ -132,9 +134,318 @@
         ]
       }
     },
+    "/emailFile/{emailId}": {
+      "get": {
+        "summary": "Return email blob file",
+        "description": "Use this API to return email blob file stored in file storage schema based on the search criteria emailId. It's used in profiles to return email and open in an end user's mail client. <p><strong>OperationId:</strong>getEmailFile</p>",
+        "operationId": "getEmailFile",
+        "parameters": [
+          {
+            "name": "emailId",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 2000,
+            "description": "Unique OPERA Email ID which is used to find an Email BLOB File from OPERA. This ID is a primary identification of an email file in OPERA."
+          },
+          {
+            "$ref": "#/parameters/authKey"
+          },
+          {
+            "$ref": "#/parameters/x-app-key"
+          },
+          {
+            "$ref": "#/parameters/x-hotelid"
+          },
+          {
+            "$ref": "#/parameters/x-externalsystem"
+          },
+          {
+            "$ref": "#/parameters/Accept-Language"
+          }
+        ],
+        "responses": {
+          "200": {
+            "headers": {
+              "Content-Language": {
+                "type": "string",
+                "description": "Audience language",
+                "pattern": "[a-zA-Z]{1,8}(-[a-zA-Z0-9]{1,8})*",
+                "x-example": "en-GB"
+              }
+            },
+            "description": "Response to fetch an email file",
+            "schema": {
+              "$ref": "#/definitions/emailFile"
+            }
+          },
+          "204": {
+            "description": "EmailFile not found."
+          },
+          "400": {
+            "$ref": "#/responses/400"
+          },
+          "401": {
+            "$ref": "#/responses/401"
+          },
+          "403": {
+            "$ref": "#/responses/403"
+          },
+          "404": {
+            "$ref": "#/responses/404"
+          },
+          "405": {
+            "$ref": "#/responses/405"
+          },
+          "406": {
+            "$ref": "#/responses/406"
+          },
+          "413": {
+            "$ref": "#/responses/413"
+          },
+          "414": {
+            "$ref": "#/responses/414"
+          },
+          "415": {
+            "$ref": "#/responses/415"
+          },
+          "500": {
+            "$ref": "#/responses/500"
+          },
+          "502": {
+            "$ref": "#/responses/502"
+          },
+          "503": {
+            "$ref": "#/responses/503"
+          }
+        },
+        "consumes": [
+          "application/json;charset=UTF-8"
+        ],
+        "produces": [
+          "application/json;charset=UTF-8"
+        ],
+        "tags": [
+          "OperaContent"
+        ]
+      }
+    },
+    "/fileAttachments": {
+      "get": {
+        "summary": "Return file attachment",
+        "description": "Use this API to return file attachments based on search criteria such as id, idContext, idType. <p><strong>OperationId:</strong>getFileAttachment</p>",
+        "operationId": "getFileAttachment",
+        "parameters": [
+          {
+            "name": "id",
+            "maxLength": 80,
+            "in": "query",
+            "required": false,
+            "description": "A unique identifying value assigned by the creating system. The ID attribute may be used to reference a primary-key value within a database or in a particular implementation.",
+            "type": "string"
+          },
+          {
+            "name": "idContext",
+            "maxLength": 80,
+            "in": "query",
+            "required": false,
+            "description": "Used to identify the source of the identifier (e.g., IATA, ABTA).",
+            "type": "string"
+          },
+          {
+            "name": "idType",
+            "maxLength": 80,
+            "in": "query",
+            "required": false,
+            "description": "A reference to the type of object defined by the UniqueID element.",
+            "type": "string"
+          },
+          {
+            "$ref": "#/parameters/authKey"
+          },
+          {
+            "$ref": "#/parameters/x-app-key"
+          },
+          {
+            "$ref": "#/parameters/x-hotelid"
+          },
+          {
+            "$ref": "#/parameters/x-externalsystem"
+          },
+          {
+            "$ref": "#/parameters/Accept-Language"
+          }
+        ],
+        "responses": {
+          "200": {
+            "headers": {
+              "Content-Language": {
+                "type": "string",
+                "description": "Audience language",
+                "pattern": "[a-zA-Z]{1,8}(-[a-zA-Z0-9]{1,8})*",
+                "x-example": "en-GB"
+              }
+            },
+            "description": "Response to fetch file attachment",
+            "schema": {
+              "$ref": "#/definitions/file"
+            }
+          },
+          "204": {
+            "description": "FileAttachment not found."
+          },
+          "400": {
+            "$ref": "#/responses/400"
+          },
+          "401": {
+            "$ref": "#/responses/401"
+          },
+          "403": {
+            "$ref": "#/responses/403"
+          },
+          "404": {
+            "$ref": "#/responses/404"
+          },
+          "405": {
+            "$ref": "#/responses/405"
+          },
+          "406": {
+            "$ref": "#/responses/406"
+          },
+          "413": {
+            "$ref": "#/responses/413"
+          },
+          "414": {
+            "$ref": "#/responses/414"
+          },
+          "415": {
+            "$ref": "#/responses/415"
+          },
+          "500": {
+            "$ref": "#/responses/500"
+          },
+          "502": {
+            "$ref": "#/responses/502"
+          },
+          "503": {
+            "$ref": "#/responses/503"
+          }
+        },
+        "consumes": [
+          "application/json;charset=UTF-8"
+        ],
+        "produces": [
+          "application/json;charset=UTF-8"
+        ],
+        "tags": [
+          "OperaContent"
+        ]
+      },
+      "post": {
+        "summary": "Upload a file attachment",
+        "description": "Use this API to upload a file attachment. <p><strong>OperationId:</strong>uploadFileAttachment</p>",
+        "operationId": "uploadFileAttachment",
+        "parameters": [
+          {
+            "name": "fileToUpload",
+            "in": "body",
+            "required": true,
+            "description": "Request to upload a file attachment.",
+            "schema": {
+              "allOf": [
+                {
+                  "$ref": "#/definitions/fileToUpload"
+                }
+              ]
+            }
+          },
+          {
+            "$ref": "#/parameters/authKey"
+          },
+          {
+            "$ref": "#/parameters/x-app-key"
+          },
+          {
+            "$ref": "#/parameters/x-hotelid"
+          },
+          {
+            "$ref": "#/parameters/x-externalsystem"
+          },
+          {
+            "$ref": "#/parameters/Accept-Language"
+          }
+        ],
+        "responses": {
+          "201": {
+            "headers": {
+              "Content-Language": {
+                "type": "string",
+                "description": "Audience language",
+                "pattern": "[a-zA-Z]{1,8}(-[a-zA-Z0-9]{1,8})*",
+                "x-example": "en-GB"
+              },
+              "Location": {
+                "type": "string",
+                "description": "Location of newly created resource"
+              }
+            },
+            "description": "HATEOAS links which help the consumer to navigate to resources",
+            "schema": {
+              "$ref": "#/definitions/status"
+            }
+          },
+          "400": {
+            "$ref": "#/responses/400"
+          },
+          "401": {
+            "$ref": "#/responses/401"
+          },
+          "403": {
+            "$ref": "#/responses/403"
+          },
+          "404": {
+            "$ref": "#/responses/404"
+          },
+          "405": {
+            "$ref": "#/responses/405"
+          },
+          "406": {
+            "$ref": "#/responses/406"
+          },
+          "413": {
+            "$ref": "#/responses/413"
+          },
+          "414": {
+            "$ref": "#/responses/414"
+          },
+          "415": {
+            "$ref": "#/responses/415"
+          },
+          "500": {
+            "$ref": "#/responses/500"
+          },
+          "502": {
+            "$ref": "#/responses/502"
+          },
+          "503": {
+            "$ref": "#/responses/503"
+          }
+        },
+        "consumes": [
+          "application/json;charset=UTF-8"
+        ],
+        "produces": [
+          "application/json;charset=UTF-8"
+        ],
+        "tags": [
+          "OperaContent"
+        ]
+      }
+    },
     "/folioReports/email": {
       "post": {
-        "summary": "Email folio report",
+        "summary": "Create email folio report",
         "description": "Use this APU to email folio report. <p><strong>OperationId:</strong>emailFolioReport</p>",
         "operationId": "emailFolioReport",
         "parameters": [
@@ -236,8 +547,8 @@
     },
     "/hotels/{hotelId}/reservations/{reservationId}/customizedLetter": {
       "put": {
-        "summary": "Set customized letter",
-        "description": "You can set a customized letter with this API. <p><strong>OperationId:</strong>setCustomizedLetter</p>",
+        "summary": "Update customized letter",
+        "description": "Use this API to update a customized letter for a reservation for a specific property based on the hotelId, reservationId, customizedLetter. <p><strong>OperationId:</strong>setCustomizedLetter</p>",
         "operationId": "setCustomizedLetter",
         "parameters": [
           {
@@ -301,7 +612,7 @@
                 "description": "Location of newly created resource"
               }
             },
-            "description": "Existing Operations Responses will eventually be modified to be extended from this type.",
+            "description": "Response Body.",
             "schema": {
               "$ref": "#/definitions/customizedLetterStatus"
             }
@@ -356,7 +667,7 @@
     },
     "/hotels/{hotelId}/reservations/{reservationId}/folioReports": {
       "get": {
-        "summary": "Get folio report",
+        "summary": "Return folio report",
         "description": "This API will get a folio report for a reservation. <p><strong>OperationId:</strong>getFolioReport</p>",
         "operationId": "getFolioReport",
         "parameters": [
@@ -380,6 +691,7 @@
           },
           {
             "name": "reservationIdContext",
+            "maxLength": 80,
             "in": "query",
             "required": false,
             "description": "Used to identify the source of the identifier (e.g., IATA, ABTA).",
@@ -387,6 +699,7 @@
           },
           {
             "name": "reservationIdType",
+            "maxLength": 80,
             "in": "query",
             "required": false,
             "description": "A reference to the type of object defined by the UniqueID element.",
@@ -404,10 +717,11 @@
             "in": "query",
             "required": false,
             "description": "Optional bill number to generate.",
-            "type": "integer"
+            "type": "number"
           },
           {
             "name": "folioType",
+            "maxLength": 80,
             "in": "query",
             "required": false,
             "description": "Optional folio type.",
@@ -423,6 +737,7 @@
           },
           {
             "name": "referenceCurrency",
+            "maxLength": 20,
             "in": "query",
             "required": false,
             "description": "Folio currency code.",
@@ -512,8 +827,8 @@
     },
     "/hotels/{hotelId}/reservations/{reservationId}/registrationCard": {
       "get": {
-        "summary": "Get registration card",
-        "description": "This API will get a registration card for a reservation. <p><strong>OperationId:</strong>getRegistrationCard</p>",
+        "summary": "Return registration card",
+        "description": "Use this API to return a registration card for a reservation based on search criteria such as reservationId, hotelId, reservationIdContext, reservationIdType, regenerate, signedOnly, language, template.  <p><strong>OperationId:</strong>getRegistrationCard</p>",
         "operationId": "getRegistrationCard",
         "parameters": [
           {
@@ -536,6 +851,7 @@
           },
           {
             "name": "reservationIdContext",
+            "maxLength": 80,
             "in": "query",
             "required": false,
             "description": "Used to identify the source of the identifier (e.g., IATA, ABTA).",
@@ -543,6 +859,7 @@
           },
           {
             "name": "reservationIdType",
+            "maxLength": 80,
             "in": "query",
             "required": false,
             "description": "A reference to the type of object defined by the UniqueID element.",
@@ -564,6 +881,7 @@
           },
           {
             "name": "language",
+            "pattern": "[a-zA-Z]{1,8}(-[a-zA-Z0-9]{1,8})*",
             "in": "query",
             "required": false,
             "description": "Optional language code to use for registration card generation. Default guest language will be applied if not specified.",
@@ -571,6 +889,7 @@
           },
           {
             "name": "template",
+            "maxLength": 80,
             "in": "query",
             "required": false,
             "description": "Optional registration card template code to use for registration card generation. Default template will be applied if not specified.",
@@ -657,6 +976,544 @@
           "OperaContent"
         ]
       }
+    },
+    "/images": {
+      "post": {
+        "summary": "Upload image",
+        "description": "You can use this API to upload an image for imageCodeType RoomMaintIssue. <p><strong>OperationId:</strong>uploadImage</p>",
+        "operationId": "uploadImage",
+        "parameters": [
+          {
+            "name": "imageToUpload",
+            "in": "body",
+            "required": true,
+            "description": "Request to upload an image.",
+            "schema": {
+              "allOf": [
+                {
+                  "$ref": "#/definitions/imageToUpload"
+                }
+              ]
+            }
+          },
+          {
+            "$ref": "#/parameters/authKey"
+          },
+          {
+            "$ref": "#/parameters/x-app-key"
+          },
+          {
+            "$ref": "#/parameters/x-hotelid"
+          },
+          {
+            "$ref": "#/parameters/x-externalsystem"
+          },
+          {
+            "$ref": "#/parameters/Accept-Language"
+          }
+        ],
+        "responses": {
+          "201": {
+            "headers": {
+              "Content-Language": {
+                "type": "string",
+                "description": "Audience language",
+                "pattern": "[a-zA-Z]{1,8}(-[a-zA-Z0-9]{1,8})*",
+                "x-example": "en-GB"
+              },
+              "Location": {
+                "type": "string",
+                "description": "Location of newly created resource"
+              }
+            },
+            "description": "HATEOAS links which help the consumer to navigate to resources",
+            "schema": {
+              "$ref": "#/definitions/status"
+            }
+          },
+          "400": {
+            "$ref": "#/responses/400"
+          },
+          "401": {
+            "$ref": "#/responses/401"
+          },
+          "403": {
+            "$ref": "#/responses/403"
+          },
+          "404": {
+            "$ref": "#/responses/404"
+          },
+          "405": {
+            "$ref": "#/responses/405"
+          },
+          "406": {
+            "$ref": "#/responses/406"
+          },
+          "413": {
+            "$ref": "#/responses/413"
+          },
+          "414": {
+            "$ref": "#/responses/414"
+          },
+          "415": {
+            "$ref": "#/responses/415"
+          },
+          "500": {
+            "$ref": "#/responses/500"
+          },
+          "502": {
+            "$ref": "#/responses/502"
+          },
+          "503": {
+            "$ref": "#/responses/503"
+          }
+        },
+        "consumes": [
+          "application/json;charset=UTF-8"
+        ],
+        "produces": [
+          "application/json;charset=UTF-8"
+        ],
+        "tags": [
+          "OperaContent"
+        ]
+      },
+      "delete": {
+        "summary": "Delete image",
+        "description": "Use this API to delete an image based on parameters such as imageCode, imageSet, imageId, imageIdContext, imageIdType. <p><strong>OperationId:</strong>removeImage</p>",
+        "operationId": "removeImage",
+        "parameters": [
+          {
+            "name": "imageCode",
+            "in": "query",
+            "required": false,
+            "description": "An enumeration of image codes such as Logo, RoomType, InvItem",
+            "type": "string",
+            "uniqueItems": true,
+            "enum": [
+              "LogoChain",
+              "Logo",
+              "Profile",
+              "Nationality",
+              "User",
+              "ToolbarItemCode",
+              "Chain",
+              "MembershipType",
+              "MembershipLevel",
+              "Resort",
+              "RoomTypeChain",
+              "RoomType",
+              "RoomNumber",
+              "OooReasonChain",
+              "OooReason",
+              "RoomMaintChain",
+              "RoomMaintenance",
+              "RoomMaintIssue",
+              "FloorPlan",
+              "SiteLayout",
+              "Attraction",
+              "PropertyMap",
+              "InvItemChain",
+              "InvItem",
+              "PackageChain",
+              "Package",
+              "Pool",
+              "RoomConditionChain",
+              "RoomCondition",
+              "FunctionSpace",
+              "FunctionSetupStyle",
+              "TrackItTypeChain",
+              "TrackItType",
+              "Height",
+              "Width"
+            ]
+          },
+          {
+            "name": "imageSet",
+            "maxLength": 800,
+            "in": "query",
+            "required": false,
+            "type": "string",
+            "description": "Used for Character Strings, length 0 to 800."
+          },
+          {
+            "name": "imageId",
+            "maxLength": 2000,
+            "in": "query",
+            "required": false,
+            "description": "A unique identifying value assigned by the creating system. The ID attribute may be used to reference a primary-key value within a database or in a particular implementation.",
+            "type": "string"
+          },
+          {
+            "name": "imageIdContext",
+            "maxLength": 80,
+            "in": "query",
+            "required": false,
+            "description": "Used to identify the source of the identifier (e.g., IATA, ABTA).",
+            "type": "string"
+          },
+          {
+            "name": "imageIdType",
+            "maxLength": 80,
+            "in": "query",
+            "required": false,
+            "description": "A reference to the type of object defined by the UniqueID element.",
+            "type": "string"
+          },
+          {
+            "$ref": "#/parameters/authKey"
+          },
+          {
+            "$ref": "#/parameters/x-app-key"
+          },
+          {
+            "$ref": "#/parameters/x-hotelid"
+          },
+          {
+            "$ref": "#/parameters/x-externalsystem"
+          },
+          {
+            "$ref": "#/parameters/Accept-Language"
+          }
+        ],
+        "responses": {
+          "200": {
+            "headers": {
+              "Content-Language": {
+                "type": "string",
+                "description": "Audience language",
+                "pattern": "[a-zA-Z]{1,8}(-[a-zA-Z0-9]{1,8})*",
+                "x-example": "en-GB"
+              },
+              "Location": {
+                "type": "string",
+                "description": "Location of newly created resource"
+              }
+            },
+            "description": "HATEOAS links which help the consumer to navigate to resources",
+            "schema": {
+              "$ref": "#/definitions/status"
+            }
+          },
+          "400": {
+            "$ref": "#/responses/400"
+          },
+          "401": {
+            "$ref": "#/responses/401"
+          },
+          "403": {
+            "$ref": "#/responses/403"
+          },
+          "404": {
+            "$ref": "#/responses/404"
+          },
+          "405": {
+            "$ref": "#/responses/405"
+          },
+          "406": {
+            "$ref": "#/responses/406"
+          },
+          "413": {
+            "$ref": "#/responses/413"
+          },
+          "414": {
+            "$ref": "#/responses/414"
+          },
+          "415": {
+            "$ref": "#/responses/415"
+          },
+          "500": {
+            "$ref": "#/responses/500"
+          },
+          "502": {
+            "$ref": "#/responses/502"
+          },
+          "503": {
+            "$ref": "#/responses/503"
+          }
+        },
+        "consumes": [
+          "application/json;charset=UTF-8"
+        ],
+        "produces": [
+          "application/json;charset=UTF-8"
+        ],
+        "tags": [
+          "OperaContent"
+        ]
+      },
+      "get": {
+        "summary": "Return image",
+        "description": "Use this API to return an image based on search criteria such as linkId, linkIdContext, linkIdType, imageCode, imageParameterCode, imageParameterValue, languageCode, imageStyle, imageId, imageIdContext, imageIdType, base64.  <p><strong>OperationId:</strong>getImage</p>",
+        "operationId": "getImage",
+        "parameters": [
+          {
+            "name": "linkId",
+            "maxLength": 2000,
+            "in": "query",
+            "required": false,
+            "description": "A unique identifying value assigned by the creating system. The ID attribute may be used to reference a primary-key value within a database or in a particular implementation.",
+            "type": "string"
+          },
+          {
+            "name": "linkIdContext",
+            "maxLength": 80,
+            "in": "query",
+            "required": false,
+            "description": "Used to identify the source of the identifier (e.g., IATA, ABTA).",
+            "type": "string"
+          },
+          {
+            "name": "linkIdType",
+            "maxLength": 80,
+            "in": "query",
+            "required": false,
+            "description": "A reference to the type of object defined by the UniqueID element.",
+            "type": "string"
+          },
+          {
+            "name": "imageCode",
+            "description": "An enumeration of image codes such as Logo, RoomType, InvItem",
+            "in": "query",
+            "required": false,
+            "type": "string",
+            "uniqueItems": true,
+            "enum": [
+              "LogoChain",
+              "Logo",
+              "Profile",
+              "Nationality",
+              "User",
+              "ToolbarItemCode",
+              "Chain",
+              "MembershipType",
+              "MembershipLevel",
+              "Resort",
+              "RoomTypeChain",
+              "RoomType",
+              "RoomNumber",
+              "OooReasonChain",
+              "OooReason",
+              "RoomMaintChain",
+              "RoomMaintenance",
+              "RoomMaintIssue",
+              "FloorPlan",
+              "SiteLayout",
+              "Attraction",
+              "PropertyMap",
+              "InvItemChain",
+              "InvItem",
+              "PackageChain",
+              "Package",
+              "Pool",
+              "RoomConditionChain",
+              "RoomCondition",
+              "FunctionSpace",
+              "FunctionSetupStyle",
+              "TrackItTypeChain",
+              "TrackItType",
+              "Height",
+              "Width"
+            ]
+          },
+          {
+            "name": "imageParameterCode",
+            "description": "An enumeration of image parameter codes such as Logo, RoomType, InvItem",
+            "in": "query",
+            "type": "array",
+            "collectionFormat": "multi",
+            "uniqueItems": true,
+            "items": {
+              "type": "string",
+              "enum": [
+                "LogoChain",
+                "Logo",
+                "Profile",
+                "Nationality",
+                "User",
+                "ToolbarItemCode",
+                "Chain",
+                "MembershipType",
+                "MembershipLevel",
+                "Resort",
+                "RoomTypeChain",
+                "RoomType",
+                "RoomNumber",
+                "OooReasonChain",
+                "OooReason",
+                "RoomMaintChain",
+                "RoomMaintenance",
+                "RoomMaintIssue",
+                "FloorPlan",
+                "SiteLayout",
+                "Attraction",
+                "PropertyMap",
+                "InvItemChain",
+                "InvItem",
+                "PackageChain",
+                "Package",
+                "Pool",
+                "RoomConditionChain",
+                "RoomCondition",
+                "FunctionSpace",
+                "FunctionSetupStyle",
+                "TrackItTypeChain",
+                "TrackItType",
+                "Height",
+                "Width"
+              ]
+            },
+            "required": false
+          },
+          {
+            "name": "imageParameterValue",
+            "in": "query",
+            "type": "array",
+            "collectionFormat": "multi",
+            "description": "Image parameter value.",
+            "items": {
+              "type": "string"
+            },
+            "required": false
+          },
+          {
+            "name": "languageCode",
+            "maxLength": 20,
+            "description": "Unique Code of language.",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "imageStyle",
+            "in": "query",
+            "required": false,
+            "type": "string",
+            "description": "An enumeration of image styles.",
+            "uniqueItems": true,
+            "enum": [
+              "Full",
+              "Thumbnail",
+              "Icon",
+              "Square",
+              "Banner",
+              "Button",
+              "Lowres",
+              "Highres"
+            ]
+          },
+          {
+            "name": "imageId",
+            "maxLength": 2000,
+            "in": "query",
+            "required": false,
+            "description": "A unique identifying value assigned by the creating system. The ID attribute may be used to reference a primary-key value within a database or in a particular implementation.",
+            "type": "string"
+          },
+          {
+            "name": "imageIdContext",
+            "maxLength": 80,
+            "in": "query",
+            "required": false,
+            "description": "Used to identify the source of the identifier (e.g., IATA, ABTA).",
+            "type": "string"
+          },
+          {
+            "name": "imageIdType",
+            "maxLength": 80,
+            "in": "query",
+            "required": false,
+            "description": "A reference to the type of object defined by the UniqueID element.",
+            "type": "string"
+          },
+          {
+            "name": "base64",
+            "in": "query",
+            "required": false,
+            "description": "True if the image to be returned as a base64String else if the image to be returned as the binary in MTOM attachment then false .",
+            "type": "boolean"
+          },
+          {
+            "$ref": "#/parameters/authKey"
+          },
+          {
+            "$ref": "#/parameters/x-app-key"
+          },
+          {
+            "$ref": "#/parameters/x-hotelid"
+          },
+          {
+            "$ref": "#/parameters/x-externalsystem"
+          },
+          {
+            "$ref": "#/parameters/Accept-Language"
+          }
+        ],
+        "responses": {
+          "200": {
+            "headers": {
+              "Content-Language": {
+                "type": "string",
+                "description": "Audience language",
+                "pattern": "[a-zA-Z]{1,8}(-[a-zA-Z0-9]{1,8})*",
+                "x-example": "en-GB"
+              }
+            },
+            "description": "Response to fetch image(s)",
+            "schema": {
+              "$ref": "#/definitions/image"
+            }
+          },
+          "204": {
+            "description": "Image not found."
+          },
+          "400": {
+            "$ref": "#/responses/400"
+          },
+          "401": {
+            "$ref": "#/responses/401"
+          },
+          "403": {
+            "$ref": "#/responses/403"
+          },
+          "404": {
+            "$ref": "#/responses/404"
+          },
+          "405": {
+            "$ref": "#/responses/405"
+          },
+          "406": {
+            "$ref": "#/responses/406"
+          },
+          "413": {
+            "$ref": "#/responses/413"
+          },
+          "414": {
+            "$ref": "#/responses/414"
+          },
+          "415": {
+            "$ref": "#/responses/415"
+          },
+          "500": {
+            "$ref": "#/responses/500"
+          },
+          "502": {
+            "$ref": "#/responses/502"
+          },
+          "503": {
+            "$ref": "#/responses/503"
+          }
+        },
+        "consumes": [
+          "application/json;charset=UTF-8"
+        ],
+        "produces": [
+          "application/json;charset=UTF-8"
+        ],
+        "tags": [
+          "OperaContent"
+        ]
+      }
     }
   },
   "parameters": {
@@ -669,7 +1526,7 @@
     },
     "x-app-key": {
       "name": "x-app-key",
-      "description": "Client or Partner’s Application Key",
+      "description": "Client or Partner's Application Key",
       "type": "string",
       "pattern": "^[a-f0-9]{8}-[a-f0-9]{4}-4[a-f0-9]{3}-[89aAbB][a-f0-9]{3}-[a-f0-9]{12}$",
       "in": "header",
@@ -677,6 +1534,7 @@
     },
     "x-hotelid": {
       "name": "x-hotelid",
+      "maxLength": 2000,
       "type": "string",
       "description": "Mandatory parameter to identify the hotel code where the end user is logged in",
       "in": "header",
@@ -886,13 +1744,7 @@
           "description": "Exact copy of the \"summary\" field on the linked operation.",
           "type": "string"
         }
-      },
-      "required": [
-        "href",
-        "rel",
-        "method",
-        "operationId"
-      ]
+      }
     },
     "warningsType": {
       "type": "array",
@@ -1048,6 +1900,165 @@
         "title"
       ]
     },
+    "emailFile": {
+      "type": "object",
+      "description": "Response object for Fetch Email Blob File Operation.",
+      "properties": {
+        "file": {
+          "description": "Email File Blob Details based on email Id Number",
+          "$ref": "#/definitions/emailFileType"
+        },
+        "links": {
+          "$ref": "#/definitions/links"
+        },
+        "warnings": {
+          "$ref": "#/definitions/warningsType"
+        }
+      }
+    },
+    "emailFileType": {
+      "type": "object",
+      "description": "ID that uniquely defines an email object",
+      "properties": {
+        "emailID": {
+          "description": "Unique ID that represents an email.",
+          "$ref": "#/definitions/uniqueID_Type"
+        },
+        "emailFile": {
+          "description": "File attachment in base64 binary format",
+          "type": "string",
+          "format": "byte"
+        },
+        "emailFileName": {
+          "description": "Name of the attachment",
+          "type": "string",
+          "minLength": 0,
+          "maxLength": 100
+        }
+      }
+    },
+    "file": {
+      "type": "object",
+      "description": "Response to fetch file attachment",
+      "properties": {
+        "fileDetails": {
+          "description": "File Attachement details",
+          "$ref": "#/definitions/fileAttachmentType"
+        },
+        "links": {
+          "$ref": "#/definitions/links"
+        },
+        "warnings": {
+          "$ref": "#/definitions/warningsType"
+        }
+      }
+    },
+    "fileAttachmentType": {
+      "type": "object",
+      "description": "ID that uniquely determines file attachment",
+      "properties": {
+        "attachmentId": {
+          "description": "Unique ID that represents file attachment",
+          "$ref": "#/definitions/uniqueID_Type"
+        },
+        "fileAttachment": {
+          "description": "File attachment in base64 binary format",
+          "type": "string",
+          "format": "byte"
+        },
+        "fileName": {
+          "description": "Name of the attachment",
+          "type": "string",
+          "minLength": 0,
+          "maxLength": 100
+        }
+      }
+    },
+    "fileToUpload": {
+      "type": "object",
+      "description": "Request to upload a file attachment.",
+      "properties": {
+        "linkId": {
+          "description": "Link Id of the attachment.",
+          "$ref": "#/definitions/stringLength200"
+        },
+        "linkType": {
+          "description": "Link Type of the attachment.",
+          "$ref": "#/definitions/stringLength200"
+        },
+        "fileName": {
+          "description": "Name of the attachment.",
+          "$ref": "#/definitions/stringLength1000"
+        },
+        "description": {
+          "description": "Description of the attachment file.",
+          "$ref": "#/definitions/stringLength2000"
+        },
+        "userName": {
+          "description": "User (name) related to the attachment file.",
+          "$ref": "#/definitions/stringLength200"
+        },
+        "hotelId": {
+          "description": "Resort related to the attachment file.",
+          "$ref": "#/definitions/stringLength200"
+        },
+        "globalYN": {
+          "description": "Global Yes (Y) or No (N) flag related to the attachment file.",
+          "$ref": "#/definitions/stringLength10"
+        },
+        "fileAttachment": {
+          "description": "Attachment file in base64 binary format.",
+          "type": "string",
+          "format": "byte"
+        },
+        "overwriteExistingFileYN": {
+          "description": "Overwrite Yes (Y) or No (N) flag related to the attachment file.",
+          "$ref": "#/definitions/stringLength10"
+        },
+        "links": {
+          "$ref": "#/definitions/links"
+        },
+        "warnings": {
+          "$ref": "#/definitions/warningsType"
+        }
+      }
+    },
+    "stringLength200": {
+      "type": "string",
+      "description": "Used for Character Strings, length 0 to 200.",
+      "maxLength": 200,
+      "minLength": 0
+    },
+    "stringLength1000": {
+      "type": "string",
+      "description": "Used for Character Strings, length 0 to 1000.",
+      "maxLength": 1000,
+      "minLength": 0
+    },
+    "stringLength2000": {
+      "type": "string",
+      "description": "Used for Character Strings, length 0 to 2000.",
+      "maxLength": 2000,
+      "minLength": 0
+    },
+    "stringLength10": {
+      "type": "string",
+      "description": "Used for Character Strings, length 0 to 10.",
+      "maxLength": 10,
+      "minLength": 0
+    },
+    "status": {
+      "type": "object",
+      "description": "Response Body.",
+      "properties": {
+        "warnings": {
+          "$ref": "#/definitions/warningsType"
+        },
+        "links": {
+          "$ref": "#/definitions/links"
+        }
+      }
+    },
     "folioReportToEmail": {
       "type": "object",
       "description": "Request to generate and email a folio report.",
@@ -1088,7 +2099,7 @@
         },
         "billNumber": {
           "description": "Optional bill number to generate.",
-          "type": "integer"
+          "type": "number"
         },
         "folioType": {
           "description": "Optional folio type.",
@@ -1127,21 +2138,9 @@
         }
       }
     },
-    "status": {
-      "type": "object",
-      "description": "Existing Operations Responses will eventually be modified to be extended from this type.",
-      "properties": {
-        "warnings": {
-          "$ref": "#/definitions/warningsType"
-        },
-        "links": {
-          "$ref": "#/definitions/links"
-        }
-      }
-    },
     "customizedLetterStatus": {
       "type": "object",
-      "description": "Existing Operations Responses will eventually be modified to be extended from this type.",
+      "description": "Response Body.",
       "properties": {
         "links": {
           "$ref": "#/definitions/links"
@@ -1222,6 +2221,222 @@
           "description": "Registration card PDF.",
           "type": "string",
           "format": "byte"
+        }
+      }
+    },
+    "imageToUpload": {
+      "type": "object",
+      "description": "Request to upload an image.",
+      "properties": {
+        "images": {
+          "description": "Image upload details including image to upload.",
+          "$ref": "#/definitions/imageUploadInfoType"
+        },
+        "links": {
+          "$ref": "#/definitions/links"
+        },
+        "warnings": {
+          "$ref": "#/definitions/warningsType"
+        }
+      }
+    },
+    "imageUploadInfoType": {
+      "type": "array",
+      "description": "List of Image details to upload including image to upload.",
+      "maxItems": 10,
+      "items": {
+        "$ref": "#/definitions/imageUploadType"
+      }
+    },
+    "imageUploadType": {
+      "type": "object",
+      "description": "Image upload details",
+      "properties": {
+        "imageCode": {
+          "description": "Image code to upload",
+          "$ref": "#/definitions/imageCodeType"
+        },
+        "fileExtension": {
+          "description": "File extension of the Image, e.g. JPG, PNG, BMP, etc.",
+          "type": "string",
+          "minLength": 0,
+          "maxLength": 10
+        },
+        "imageParameters": {
+          "description": "Zero or more image parameters - code / value pairs which define the image path. These are dependent on the image code type.",
+          "$ref": "#/definitions/imageParametersType"
+        },
+        "languageCode": {
+          "description": "Language code for the image.",
+          "$ref": "#/definitions/languageType"
+        },
+        "imageStyle": {
+          "description": "Style of the image.",
+          "$ref": "#/definitions/imageStyleType"
+        },
+        "linkId": {
+          "description": "Link ID to reference table.",
+          "$ref": "#/definitions/uniqueID_Type"
+        },
+        "description": {
+          "description": "Description of the image.",
+          "type": "string",
+          "minLength": 0,
+          "maxLength": 2000
+        },
+        "image": {
+          "description": "Image file to upload.",
+          "type": "string",
+          "format": "byte"
+        },
+        "imageId": {
+          "description": "Image Id of the image to be replaced.",
+          "$ref": "#/definitions/uniqueID_Type"
+        }
+      }
+    },
+    "imageCodeType": {
+      "type": "string",
+      "enum": [
+        "LogoChain",
+        "Logo",
+        "Profile",
+        "Nationality",
+        "User",
+        "ToolbarItemCode",
+        "Chain",
+        "MembershipType",
+        "MembershipLevel",
+        "Resort",
+        "RoomTypeChain",
+        "RoomType",
+        "RoomNumber",
+        "OooReasonChain",
+        "OooReason",
+        "RoomMaintChain",
+        "RoomMaintenance",
+        "RoomMaintIssue",
+        "FloorPlan",
+        "SiteLayout",
+        "Attraction",
+        "PropertyMap",
+        "InvItemChain",
+        "InvItem",
+        "PackageChain",
+        "Package",
+        "Pool",
+        "RoomConditionChain",
+        "RoomCondition",
+        "FunctionSpace",
+        "FunctionSetupStyle",
+        "TrackItTypeChain",
+        "TrackItType",
+        "Height",
+        "Width"
+      ]
+    },
+    "imageParametersType": {
+      "type": "array",
+      "description": "Collection of image parameters code / value pairs.",
+      "maxItems": 500,
+      "items": {
+        "$ref": "#/definitions/imageParameterType"
+      }
+    },
+    "imageParameterType": {
+      "type": "object",
+      "description": "Image parameter code/value pair",
+      "properties": {
+        "imageParameterCode": {
+          "description": "Image parameter code.",
+          "$ref": "#/definitions/imageCodeType"
+        },
+        "imageParameterValue": {
+          "description": "Image parameter value.",
+          "type": "string",
+          "minLength": 0,
+          "maxLength": 40
+        }
+      }
+    },
+    "languageType": {
+      "type": "string",
+      "minLength": 0,
+      "maxLength": 40
+    },
+    "imageStyleType": {
+      "type": "string",
+      "description": "An enumeration of image styles.",
+      "enum": [
+        "Full",
+        "Thumbnail",
+        "Icon",
+        "Square",
+        "Banner",
+        "Button",
+        "Lowres",
+        "Highres"
+      ]
+    },
+    "image": {
+      "type": "object",
+      "description": "Response to fetch image(s)",
+      "properties": {
+        "images": {
+          "description": "Collection of images",
+          "$ref": "#/definitions/imageResultsType"
+        },
+        "links": {
+          "$ref": "#/definitions/links"
+        },
+        "warnings": {
+          "$ref": "#/definitions/warningsType"
+        }
+      }
+    },
+    "imageResultsType": {
+      "type": "array",
+      "description": "Collection of image results.",
+      "maxItems": 4000,
+      "items": {
+        "$ref": "#/definitions/imageResultType"
+      }
+    },
+    "imageResultType": {
+      "type": "object",
+      "properties": {
+        "imageSet": {
+          "description": "Image set describing path of image.",
+          "type": "string",
+          "minLength": 0,
+          "maxLength": 800
+        },
+        "mimeType": {
+          "description": "Mime type of the Image.",
+          "type": "string",
+          "minLength": 0,
+          "maxLength": 20
+        },
+        "image": {
+          "description": "Image file to upload.",
+          "type": "string",
+          "format": "byte"
+        },
+        "imageId": {
+          "description": "ImageId file.",
+          "$ref": "#/definitions/uniqueID_Type"
+        },
+        "linkId": {
+          "description": "LinkID of the file.",
+          "$ref": "#/definitions/uniqueID_Type"
+        },
+        "imageLinkId": {
+          "description": "Image link id file.",
+          "$ref": "#/definitions/uniqueID_Type"
+        },
+        "base64Image": {
+          "description": "Base64Image image content of the file.",
+          "type": "string"
         }
       }
     }

@@ -2,8 +2,8 @@
   "swagger": "2.0",
   "info": {
     "title": "OPERA Cloud Back Office Operations API",
-    "description": "APIs to cater for Back Office Operations functionality in OPERA Cloud. <br /><br /> A common BackOffice industry term is End of Day.  This closes and balances each day's business activities. It reconciles guest folios and processes credit card transactions. The End of Day routine rolls the business date forward and prints final reports.<br /><br />Compatible with OPERA Cloud release 21.5.0.0.<br /><br /><p>This document and all content within is available under the Universal Permissive License v 1.0 (https://oss.oracle.com/licenses/upl). Copyright (c) 2020,2022 Oracle and/or its affiliates.</p>",
-    "version": "21.5.0.0",
+    "description": "APIs to cater for Back Office Operations functionality in OPERA Cloud. <br /><br /> A common BackOffice industry term is End of Day.  This closes and balances each day's business activities. It reconciles guest folios and processes credit card transactions. The End of Day routine rolls the business date forward and prints final reports.<br /><br /> Compatible with OPERA Cloud release 24.4.<br /><br /><p> This document and all content within is available under the Universal Permissive License v 1.0 (https://oss.oracle.com/licenses/upl). Copyright (c) 2020, 2024 Oracle and/or its affiliates.</p>",
+    "version": "24.4",
     "termsOfService": "https://www.oracle.com/legal/terms.html",
     "contact": {
       "email": "hospitality_apis_ww_grp@oracle.com"
@@ -139,7 +139,7 @@
     },
     "x-app-key": {
       "name": "x-app-key",
-      "description": "Client or Partner’s Application Key",
+      "description": "Client or Partner's Application Key",
       "type": "string",
       "pattern": "^[a-f0-9]{8}-[a-f0-9]{4}-4[a-f0-9]{3}-[89aAbB][a-f0-9]{3}-[a-f0-9]{12}$",
       "in": "header",
@@ -164,6 +164,12 @@
       "name": "Accept-Language",
       "type": "string",
       "description": "Language code",
+      "in": "header"
+    },
+    "x-hubid": {
+      "name": "x-hubid",
+      "type": "string",
+      "description": "x-hubid is a logical grouping of multiple properties that allows api consumers to manage data from a group of properties. This x-hubid is a valid list of hub codes configured in OPERA to which the user has access. Rest APIs without hotelId in the operation path can support hub level integration using x-hubid",
       "in": "header"
     }
   },
@@ -305,13 +311,7 @@
           "description": "Exact copy of the \"summary\" field on the linked operation.",
           "type": "string"
         }
-      },
-      "required": [
-        "href",
-        "rel",
-        "method",
-        "operationId"
-      ]
+      }
     },
     "warningsType": {
       "type": "array",

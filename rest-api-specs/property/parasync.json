@@ -2,8 +2,8 @@
   "swagger": "2.0",
   "info": {
     "title": "OPERA Cloud Price Availability Rate Async API",
-    "description": "APIs to cater for Price and Rate Availability Asynchronous functionality in OPERA Cloud.<br /><br />Compatible with OPERA Cloud release 21.5.0.0.<br /><br /><p>This document and all content within is available under the Universal Permissive License v 1.0 (https://oss.oracle.com/licenses/upl). Copyright (c) 2020,2022 Oracle and/or its affiliates.</p>",
-    "version": "21.5.0.0",
+    "description": "APIs to cater for Price and Rate Availability Asynchronous functionality in OPERA Cloud.<br /><br /> Compatible with OPERA Cloud release 24.4.<br /><br /><p> This document and all content within is available under the Universal Permissive License v 1.0 (https://oss.oracle.com/licenses/upl). Copyright (c) 2020, 2024 Oracle and/or its affiliates.</p>",
+    "version": "24.4",
     "termsOfService": "https://www.oracle.com/legal/terms.html",
     "contact": {
       "email": "hospitality_apis_ww_grp@oracle.com"
@@ -56,6 +56,9 @@
           },
           "403": {
             "$ref": "#/responses/403"
+          },
+          "404": {
+            "$ref": "#/responses/404"
           },
           "405": {
             "$ref": "#/responses/405"
@@ -187,31 +190,40 @@
             "description": "Response for status of scheduled asynchronous process."
           },
           "400": {
-            "description": "Bad Request"
+            "$ref": "#/responses/400"
           },
           "401": {
-            "description": "Unauthorized"
+            "$ref": "#/responses/401"
           },
           "403": {
-            "description": "Forbidden"
+            "$ref": "#/responses/403"
           },
           "404": {
-            "description": "Resource not found"
+            "$ref": "#/responses/404"
           },
           "405": {
-            "description": "Method not allowed"
+            "$ref": "#/responses/405"
           },
           "406": {
-            "description": "Not acceptable."
+            "$ref": "#/responses/406"
+          },
+          "413": {
+            "$ref": "#/responses/413"
+          },
+          "414": {
+            "$ref": "#/responses/414"
+          },
+          "415": {
+            "$ref": "#/responses/415"
           },
           "500": {
-            "description": "System Error"
+            "$ref": "#/responses/500"
           },
           "502": {
-            "description": "Bad Gateway"
+            "$ref": "#/responses/502"
           },
           "503": {
-            "description": "Service Unavailable"
+            "$ref": "#/responses/503"
           }
         },
         "parameters": [
@@ -302,6 +314,12 @@
           "406": {
             "$ref": "#/responses/406"
           },
+          "413": {
+            "$ref": "#/responses/413"
+          },
+          "414": {
+            "$ref": "#/responses/414"
+          },
           "415": {
             "$ref": "#/responses/415"
           },
@@ -378,7 +396,7 @@
     },
     "x-app-key": {
       "name": "x-app-key",
-      "description": "Client or Partner’s Application Key",
+      "description": "Client or Partner's Application Key",
       "type": "string",
       "pattern": "^[a-f0-9]{8}-[a-f0-9]{4}-4[a-f0-9]{3}-[89aAbB][a-f0-9]{3}-[a-f0-9]{12}$",
       "in": "header",

@@ -12,14 +12,18 @@ Specifications for Oracle Hospitality REST APIs are held in the [rest-api-specs]
 
 Ask questions on by sending us an email to <hospitality_apis_ww_grp@oracle.com>.
 
-## Get Involved
+## Getting Started
 
 - Learn how to [contribute](CONTRIBUTING.md)
 - See [issues](https://github.com/oracle/hospitality-api-docs/issues) for issues you can help with.
 
-## Reporting Security Vulnerabilities
+## Contributing
 
-Please do NOT raise a GitHub Issue to report a security vulnerability. Refer to [SECURITY](SECURITY.md) for details on how to report security vulnerabilities.
+This project welcomes contributions from the community. Before submitting a pull request, please [review our contribution guide](./CONTRIBUTING.md)
+
+## Security
+
+Please consult the [security guide](./SECURITY.md) for our responsible security vulnerability disclosure process
 
 ## License
 
@@ -29,4 +33,4 @@ See [LICENSE](LICENSE.txt) for more details.
 
 ## Copyright
 
-Copyright (c) 2021, 2022 Oracle and/or its affiliates.
+Copyright (c) 2021, 2024 Oracle and/or its affiliates.
